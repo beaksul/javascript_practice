@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div>
+    <span><span id="order">1</span>번째 참가자</span>
+  </div>
+  <div>
+    <span>제시어 : </span><span id="word"></span>
+  </div>
+  <div>
+    <input type="text">
+    <button>입력</button>
+  </div>
+
+  <script>
+    const number = Number(prompt("몇 명이 참가하나요?"))
+
+    if(number){ // prompt 취소시 null Number에서 null은 NaN if문에서 NaN은 false이므로 ture일시에 코드가 실행됨
+      const $input = document.querySelector('input');
+      const $word = document.querySelector('#word');
+      const $button = document.querySelector('button');
+      const $order = document.querySelector('#order');
+      let word;
+      let newWord;
+  
+      const onClickButton = () => {
+        if(!word || (newWord.length === 3 && word[word.length - 1] === newWord[0])){
+          word = newWord;
+          $word.textContent = word;
+          $input.value = '';
+          $input.focus();
+          const order = Number($order.textContent);
+          if(order + 1 > number){
+            $order.textContent = 1;
+          }else{
+            $order.textContent = order + 1;
+          }
+        }else{
+          alert("다시 입력하세요.")
+        }
+      }
+      const onInput = (event) => {
+            newWord = event.target.value;
+        }
+
+      $button.addEventListener('click', onClickButton);
+      $input.addEventListener('input', onInput);
+    }
+  </script>
+</body>
+</html>
