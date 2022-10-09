@@ -116,6 +116,26 @@
     */
 
     const onClickOperator = (op) => () => {
+      if(numTwo){
+        switch(operator){
+        case '+':
+        $result.value = parseInt(numOne) + parseInt(numTwo);
+        break;
+        case '-':
+        $result.value = numOne - numTwo;
+        break;
+        case '*':
+        $result.value = numOne * numTwo;
+        break;
+        case '/':
+        $result.value = numOne / numTwo;
+        break;
+        default:
+          break;
+      }
+      numOne = $result.value;
+      numTwo = '';
+      }
       if(numOne){
         operator = op;
         $operator.value = op;
@@ -150,6 +170,10 @@
         default:
           break;
       }
+      $operator.value = '';
+      numOne = $result.value;
+      operator = '';
+      numTwo = '';
     }else{
         alert('숫자를 먼저 입력하세요.');
       }
@@ -170,6 +194,7 @@
       // }
 
     });
+
     document.querySelector('#clear').addEventListener('click', () => {
       numOne = '';
       operator = '';
@@ -177,7 +202,7 @@
       $operator.value = '';
       $result.value = '';
     });
-
+    
   </script>
 </body>
 </html>
