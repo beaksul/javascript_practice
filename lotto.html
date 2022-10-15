@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로또 추첨기</title>
+</head>
+<body>
+  <style>
+    .ball{
+      display: inline-block;
+      border: 1px solid #000;
+      border-radius: 20px;
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      font-size: 20px;
+      text-align: center;
+      margin-right: 20px;
+    }
+  </style>
+  <div id="result">추첨 결과는?</div>
+  <div id="bonus">보너스 :</div>
+
+  <script>
+    const candidate = Array(45).fill().map((v, i) => i + 1);
+    // 1부터 45를 가지는 배열을 만듦
+
+    const shuffle = [];
+    // while문(조건이 간단하고 몇번 반복해야할지 모를 때)
+    while(candidate.length > 0){
+      const random = Math.floor(Math.random() * candidate.length);
+      // 무작위로 인덱스 뽑기
+      const spliceArray = candidate.splice(random, 1);
+      // 뽑은 숫자를 배열에 담음 ex) 7
+      const value = spliceArray[0];
+      // 배열에 들어 있는 값을 꺼내서 ex) 7의 0번째 = 7을 그대로 꺼냄
+      shuffle.push(value);
+      // shuffle에 넣음(45까지 랜덤으로 섞임)
+    }
+    console.log(shuffle);
+
+    /* for문(조건이 복잡할 때 쓰기 좋음)
+      for(i = candidate.length; i > 0; i--){
+      const random = Math.floor(Math.random() * i);
+      // 무작위로 인덱스 뽑기
+      const spliceArray = candidate.splice(random, 1);
+      // 뽑은 숫자를 배열에 담음 ex) 7
+      const value = spliceArray[0];
+      // 배열에 들어 있는 값을 꺼내서 ex) 7의 0번째 = 7을 그대로 꺼냄
+      shuffle.push(value);
+      // shuffle에 넣음(45까지 랜덤으로 섞임)
+    }
+    */
+
+
+    const winBalls = shuffle.slice(0, 6).sort((a, b) => a - b);
+    const bonus = shuffle[6];
+    console.log(winBalls, bonus);
+
+    /*
+    splice(시작 인덱스, 잘라낼 개수) - 원본이 변함, 추가 가능
+    slice(시작 인덱스, 끝 인덱스(포함 안함)) - 원본이 변하지 않음, 추가 불가능(-3 = 뒤에서 3번째)
+
+    sort((a, b) => a - b); 오름차순
+    sort((a, b) => b - a); 내림차순
+    원본을 바꾸는 메서드가 있는 경우 .slice()를 넣어주면 원본을 복제할 수 있다.
+    */
+
+    const $result = document.querySelector('#result');
+    const $bonus = document.querySelector('#bonus');
+
+    function colorize(number, $tag){
+      if(number < 10){
+        $tag.style.backgroundColor = 'red';
+        $tag.style.color = '#fff';
+      }else if(number < 20){
+        $tag.style.backgroundColor = 'orange';
+      }else if(number < 30){
+        $tag.style.backgroundColor = 'yellow';
+      }else if(number < 30){
+        $tag.style.backgroundColor = 'blue';
+        $tag.style.color = '#fff';
+      }else{
+        $tag.style.backgroundColor = 'green';
+        $tag.style.color = '#fff';
+      }
+    }
+
+    const drawBall = (number, $target) => {
+      const $ball = document.createElement('div');
+      $ball.className = 'ball';
+      $ball.textContent = number;
+      colorize(number, $ball);
+      $target.appendChild($ball);
+    };
+
+    for(let i = 0; i < 6; i++){
+      setTimeout(() => {
+        drawBall(winBalls[i], $result);
+      }, (i + 1) * 1000);
+    }
+
+    setTimeout(() => {
+      drawBall(bonus, $bonus)
+    }, 7000);
+
+    
+  </script>
+</body>
+</html>
