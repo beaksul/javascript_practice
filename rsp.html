@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>가위바위보</title>
+  <style>
+    #computer{
+      width: 142px;
+      height: 200px;
+    }
+  </style>
+</head>
+<body>
+  <div id="computer"></div>
+  <div>
+    <button id="scissors" class="btn">가위</button>
+    <button id="rock" class="btn">바위</button>
+    <button id="paper" class="btn">보</button>
+  </div>
+  <div id="score">0</div>
+  <script>
+    const $computer = document.querySelector("#computer");
+    const $score = document.querySelector("#score");
+    const $rock = document.querySelector("#rock");
+    const $scissors = document.querySelector("#scissors");
+    const $paper = document.querySelector("#paper");
+    const IMG_URL = './rsp.png';
+    $computer.style.background = `url(${IMG_URL}) 0 0`;
+    $computer.style.backgroundSize = `auto 200px`;
+
+    // 공통점이 있는 변수는 객체로 묶어줌
+    const rspX = {
+      scissors: '0',
+      rock: '-220px',
+      paper: '-440px',
+    }
+
+    let computerChoice = 'scissors';
+    const changeComputerHand = () => {
+      if(computerChoice === 'rock'){
+        computerChoice = 'scissors';
+      } else if(computerChoice === 'scissors'){
+        computerChoice = 'paper';
+      } else if(computerChoice === 'paper'){
+        // 가급적이면 else도 else if로 정확하게 해주는 것이 좋음
+        computerChoice = 'rock';
+      }
+      $computer.style.background = `url(${IMG_URL}) ${rspX[computerChoice]} 0`;
+      $computer.style.backgroundSize = `auto 200px`;
+      // 백그라운드를 새로 설정하면 백그라운드사이즈가 리셋되기 때문에 항상 같이 설정해줘야 한다.
+    }
+
+    /*
+    setInterval은 정해진 시간을 지키기위해 노력함
+
+    function hello(){
+      console.log('hello'); // 1초 이상 걸리는 코드일 경우 그 시간을 기다린 뒤 1초 뒤에 실행됨
+      setTimeout(hello, 1000);
+    }
+    setTimeout(hello, 1000);
+    setTimeout은 앞코드가 실행되는 시간을 기다린 뒤 정해진 시간에 실행됨
+    */
+
+    let intervalId = setInterval(changeComputerHand, 50);
+    // setInterval은 ID값을 가짐
+
+    const scoreTable = {
+    rock: 0,
+    scissors: 1,
+    paper: -1,
+  };
+
+    // 플래그(flag-깃발) 변수
+    let clickable = true;
+    let score = 0;
+    const clickButton = () => {
+      if(clickable){
+        clearInterval(intervalId);
+        clickable = false;
+        // 점수 계산 및 화면 표시
+        const myChoice = event.target.textContent === '바위' 
+        ? 'rock' 
+        : event.target.textContent === '가위' 
+          ? 'scissors' 
+          : 'paper';
+        const myScore = scoreTable[myChoice];
+        const computerScore = scoreTable[computerChoice];
+        const diff = myScore - computerScore;
+
+        let message;
+        if ([2, -1].includes(diff)) {
+          score += 1;
+          message = '승리';
+        } else if ([-2, 1].includes(diff)) {
+          score -= 1;
+          message = '패배';
+        } else {
+          message = '무승부';
+        }
+        $score.textContent = `${message} 총: ${score}점`;
+        setTimeout(() => {
+          clickable = true;
+          // 여러번 클릭시 버그 방지 clearInterval() or removeEventListener() 사용
+          intervalId = setInterval(changeComputerHand, 50);
+        }, 1000);
+      }
+    };
+
+    $rock.addEventListener('click', clickButton);
+    $scissors.addEventListener('click', clickButton);
+    $paper.addEventListener('click', clickButton);
+
+  </script>
+</body>
+</html>
