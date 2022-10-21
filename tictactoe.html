@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>틱택토</title>
+  <style>
+    table {
+      border-collapse: collapse;
+    }
+  
+    td {
+      border: 1px solid black;
+      width: 40px;
+      height: 40px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    const { body } = document;
+    // const body = document.body;
+    // 변수명과 변수에 담을 객체의 속성이 같을 때
+    const $table = document.createElement('table');
+    const $result = document.createElement('div');
+    const rows = [];
+    let turn = 'O';
+    // for (let i = 0; i < 3; i++){
+    //   rows.push([]);
+    // }
+    // 배열안에 배열 - 이차원배열
+
+    const callback = (event) => {
+      // 칸에 글자가 있나
+      if(event.target.textContent) return;
+      // 글자가 있으면(true) 종료
+
+      // 빈칸이면
+      console.log('빈칸입니다.');
+      event.target.textContent = turn;
+      if(turn === 'O'){
+        turn = 'X';
+      }else if(turn === 'X'){
+        turn = 'O';
+      }
+      // turn = (turn === 'O') ? 'X' : 'O'
+      // turn = (turn === 'O' ? 'X' : 'O')
+      // 헷갈리면 소괄호 사용!
+    }
+
+    for(let i = 0; i < 3; i++){
+      const $tr = document.createElement('tr');
+      const cells = [];
+      for(let j = 0; j < 3; j++){
+        const $td = document.createElement('td');
+        cells.push($td);
+        $td.addEventListener('click', callback);
+        $tr.append($td);
+      }
+      rows.push(cells);
+      $table.append($tr);
+    }
+
+    body.append($table);
+    body.append($result);
+  </script>
+</body>
+</html>
