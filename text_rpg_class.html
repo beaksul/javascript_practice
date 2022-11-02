@@ -65,6 +65,7 @@
         ];
         this.start(name);
       }
+      // 연관이 있는 동작은 하나로 묶는 게 보기 편함
       start(name) {
         console.log(this);
         $gameMenu.addEventListener('submit', this.onGameMenuInput);
@@ -136,6 +137,13 @@
         } else if (input === '2') { // 회복
           const { hero, monster } = this;
           hero.hp = Math.min(hero.maxHp, hero.hp + 20);
+          /*
+          hero.hp += 20;
+          if(hero.hp > hero.maxHp){
+            hero.hp = hero.maxHp;
+          }
+          와 같음
+          */
           monster.attack(hero);
           this.showMessage('체력을 조금 회복했다!');
           this.updateHeroStat();
@@ -188,7 +196,7 @@
         game = null;
       }
     }
-    
+
     class Unit {
       constructor(game, name, hp, att, xp) {
         this.game = game;
