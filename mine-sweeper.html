@@ -231,6 +231,7 @@
       }
     }
 
+    // 지뢰 위치 보여줌
     function showMines() {
       const mines = [CODE.MINE, CODE.QUESTION_MINE, CODE.FLAG_MINE];
       data.forEach((row, rowIndex) => {
@@ -259,12 +260,14 @@
           transferMine(rowIndex, cellIndex); // 지뢰 옮기기
           data[rowIndex][cellIndex] = CODE.NORMAL; // 지금 칸을 빈칸으로
           cellData = CODE.NORMAL;
+          // cellData는 참조 관계가 아닌 원시값을 가지고 있고 대입이기때문에 복사된 것임. 또 다시 한번 값을 대입해서 변경해줘야함
         }
       }
 
       if (cellData === CODE.NORMAL) { // 닫힌 칸이면
         openAround(rowIndex, cellIndex);
       } else if (cellData === CODE.MINE) { // 지뢰 칸이면
+        showMines();
         target.textContent = '펑';
         target.className = 'opened';
         clearInterval(interval);
