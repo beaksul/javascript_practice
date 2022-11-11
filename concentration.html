@@ -109,11 +109,13 @@
         return;
       }
       clickable = false;
+      // 클릭한 카드가 두개면 클릭을 막음
       setTimeout(() => {
         clicked[0].classList.remove('flipped');
         clicked[1].classList.remove('flipped');
         clicked = [];
         clickable = true;
+        // 클릭한 카드가 비워지면 다시 클릭 가능
       }, 500);
     }
 
